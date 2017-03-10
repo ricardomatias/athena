@@ -1,0 +1,14 @@
+{
+  "parser": "babel-eslint",
+  "extends": [ "airbnb" ],
+  "rules": {
+    "array-bracket-spacing": [ 1, "always" ],
+    "comma-dangle": 0,
+    "prefer-arrow-callback": 0,
+    "jsx-filename-extension": 0
+  },
+  "env": {
+    "node": true,
+    "browser": true
+  }
+}
