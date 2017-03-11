@@ -5,7 +5,9 @@
     "array-bracket-spacing": [ 1, "always" ],
     "comma-dangle": 0,
     "prefer-arrow-callback": 0,
-    "jsx-filename-extension": 0
+    "jsx-filename-extension": 0,
+    "one-var": 0,
+    "indent": [ "error", 2, { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } } ]
   },
   "env": {
     "node": true,
