@@ -1,13 +1,14 @@
-'use strict';
+/* eslint import/no-extraneous-dependencies: 0 */
 
-const open = require('open');
+const open = require('open'),
+      timeGrunt = require('time-grunt'),
+      loadTasks = require('load-grunt-tasks');
 
 const webpackConfig = require('./webpack.config');
 
-module.exports = function(grunt) {
-
-  require('time-grunt')(grunt);
-  require('load-grunt-tasks')(grunt);
+module.exports = (grunt) => {
+  timeGrunt(grunt);
+  loadTasks(grunt);
 
   grunt.initConfig({
     less: {
@@ -23,7 +24,7 @@ module.exports = function(grunt) {
     clean: [ 'public' ],
     concurrent: {
       dev: {
-        tasks: [ 'nodemon', 'watch' ],
+        tasks: [ 'watch', 'nodemon' ],
         options: {
           logConcurrentOutput: true
         }
@@ -33,32 +34,36 @@ module.exports = function(grunt) {
       dev: {
         script: 'index.js',
         options: {
-          nodeArgs: [],
+          nodeArgs: [ '--trace-warnings' ],
           env: {
-            PORT: '5455'
+            PORT: 3000
           },
+          watch: [ 'server', 'index.js' ],
           // omit this property if you aren't serving HTML files and
           // don't want to open a browser tab on start
-          callback: function (nodemon) {
-            nodemon.on('log', function (event) {
+          callback: (nodemon) => {
+            nodemon.on('log', (event) => {
               console.log(event.colour);
             });
 
             // opens browser on initial server start
-            nodemon.on('config:update', function () {
+            nodemon.on('config:update', () => {
               // Delay before server listens on port
-              setTimeout(function() {
+              setTimeout(() => {
                 open('http://localhost:3000');
               }, 1000);
-            });
-
-            // refreshes browser when server reboots
-            nodemon.on('restart', function () {
-              // Delay before server listens on port
             });
           }
         }
       }
+    },
+    copy: {
+      main: {
+        files: [
+          // includes files within path
+          { expand: true, src: [ 'vendors/*' ], dest: 'public' },
+        ]
+      },
     },
     watch: {
       less: {
@@ -81,7 +86,9 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('client', [ 'clean', 'webpack', 'less' ]);
+  grunt.registerTask('client', [ 'clean', 'copy', 'less', 'webpack' ]);
+
+  grunt.registerTask('dev', [ 'client', 'nodemon' ]);
 
   grunt.registerTask('default', [ 'client', 'concurrent:dev' ]);
 };

@@ -10,13 +10,14 @@ module.exports = {
   entry: {
     index: [
       'react-hot-loader/patch',
-      './client/index.js'
+      'webpack-hot-middleware/client',
+      `${resolve('client')}/index.js`
     ]
   },
   output: {
-    path: resolve('public/'),
+    path: '/',
     filename: '[name].js',
-    publicPath: '/'
+    publicPath: resolve('public/')
   },
   resolve: {
     modules: [
@@ -32,7 +33,7 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: [ [ 'es2015', { modules: false } ], 'react' ],
-          plugins: [ 'react-hot-loader/babel', 'transform-object-rest-spread' ]
+          plugins: [ 'react-hot-loader/babel' ]
         }
       }
     ]

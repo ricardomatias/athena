@@ -5,9 +5,17 @@
     "array-bracket-spacing": [ 1, "always" ],
     "comma-dangle": 0,
     "prefer-arrow-callback": 0,
-    "jsx-filename-extension": 0,
+    "react/jsx-filename-extension": [ 1, { "extensions": [".js"] }],
     "one-var": 0,
-    "indent": [ "error", 2, { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } } ]
+    "indent": [ "error", 2, { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } } ],
+    "no-trailing-spaces": ["error", { "skipBlankLines": true } ],
+    "no-console": 0,
+    "no-restricted-syntax": 0,
+    "no-param-reassign": 0,
+    "space-before-function-paren": ["error", "never"],
+    "consistent-return": 0,
+    "import/prefer-default-export": 0,
+    "react/forbid-prop-types": 0
   },
   "env": {
     "node": true,

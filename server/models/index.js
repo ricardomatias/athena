@@ -1,11 +1,11 @@
-const argument = require('./argument'),
-      debate = require('./debate'),
-      motion = require('./motion'),
+const movie = require('./movie'),
+      music = require('./music'),
+      book = require('./book'),
       user = require('./user');
 
 module.exports = {
-  Argument: argument,
-  Debate: debate,
-  Motion: motion,
+  Movie: movie,
+  Music: music,
+  Book: book,
   User: user
 };
