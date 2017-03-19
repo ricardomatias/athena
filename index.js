@@ -8,7 +8,7 @@ const Koa = require('koa'),
       logger = require('koa-logger'),
       serve = require('koa-static'),
       etag = require('koa-etag'),
-      // jwt = require('koa-jwt'),
+      jwt = require('koa-jwt'),
       cors = require('kcors'),
       errors = require('koa-errors'),
       passport = require('koa-passport'),
@@ -24,8 +24,8 @@ mongoose.Promise = global.Promise; // Use native promises
 const app = new Koa();
 
 const Routes = require('./server/routes'),
-      models = require('./server/models');
-      // secrets = require('./server/config/secrets'),
+      { errorHandling } = require('./server/middleware'),
+      secrets = require('./server/config/secrets');
       // webpackConfig = require('./webpack.config'),
       // webpack = require('webpack'),
       // webpackHotMiddlware = require('./server/middleware/webpack-hot'),
@@ -47,7 +47,7 @@ mongoose.set('debug', false);
 /* eslint no-console: 0 */
 mongoose.connection.on('error', console.error.bind(console, 'mongo connection error:'));
 mongoose.connection.on('connected', console.log.bind(console, 'mongo connection established!'));
-mongoose.connection.on('connected', () => mongoose.connection.db.dropDatabase());
+// mongoose.connection.on('connected', () => mongoose.connection.db.dropDatabase());
 
 // middleware
 // const compiler = webpack(webpackConfig);
@@ -88,11 +88,17 @@ app.use(serve(path.join(__dirname, 'public'), {
   maxage: 0,
   extensions: [ 'map' ]
 }));
+app.use(errorHandling());
+
+// Session Configuration
 app.use(passport.initialize());
 
-// router.use('/api', jwt({ secret: secrets.TOKEN_SECRET }));
+router.use('/api', jwt({ secret: secrets.TOKEN_SECRET }).unless({ path: [ /^\/api\/(login|register)/ ] }));
 
+router.post('/api/login', Routes.login);
 router.post('/api/register', Routes.register);
+
+router.get('/api/user/:id', Routes.user);
 
 // Routes
 router.get('/*', Routes.index);

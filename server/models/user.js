@@ -25,20 +25,15 @@ UserSchema.methods.clean = function clean() {
   /* eslint no-underscore-dangle: 0 */
   delete user.password;
   delete user._id;
+  delete user.__v;
 
   return user;
 };
 
-UserSchema.methods.comparePasswords = function comparePasswords(password, next) {
-  try {
-    promisify(bcrypt.compare, password, this.password);
+UserSchema.methods.comparePasswords = async function comparePasswords(password) {
+  const answer = await promisify(bcrypt.compare, password, this.password);
 
-    next();
-  } catch (err) {
-    console.error(err);
-
-    next(err);
-  }
+  return answer;
 };
 
 UserSchema.pre('save', async function preSave(next) {

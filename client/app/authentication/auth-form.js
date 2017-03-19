@@ -75,7 +75,7 @@ const AuthForm = (props) => {
             </p>
             { passwordField.map(field => (field)) }
             <p className="control">
-              <button className="button is-success" onChange={preventTransition} disabled={props.isDisabled}>
+              <button className={`button is-success ${props.isLoading ? 'is-loading' : ''}`} onChange={preventTransition} disabled={props.isDisabled}>
                 {props.submit}
               </button>
             </p>
@@ -93,7 +93,8 @@ AuthForm.propTypes = {
   onAuth: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
   isDisabled: React.PropTypes.bool.isRequired,
-  isValid: React.PropTypes.object.isRequired
+  isValid: React.PropTypes.object.isRequired,
+  isLoading: React.PropTypes.bool.isRequired
 };
 
 export default AuthForm;

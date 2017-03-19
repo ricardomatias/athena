@@ -1,25 +1,75 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
 
-import { Login, Register } from './authentication';
+import { Login, Register, logoutUser, isUserAuthenticated } from './authentication';
 import { Home, Navigation } from './components';
+import { PublicRoute } from './routes';
 
-const App = () => (
-  <Router>
-    <section className="section">
-      <div className="container">
-        <Navigation />
+import { bind } from './helpers';
 
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route exact path="/" component={Home} />
-      </div>
-    </section>
-  </Router>
-);
+class App extends Component {
 
-export default App;
+  componentWillMount() {
+    const { dispatch } = this.props;
+
+    dispatch(isUserAuthenticated());
+  }
+
+  logoutUser() {
+    const { dispatch } = this.props;
+
+    dispatch(logoutUser());
+  }
+
+  render() {
+    const { isAuthenticated, email } = this.props;
+
+    return (
+      <Router>
+        <section className="section">
+          <div className="container">
+            <Navigation
+              isAuthenticated={isAuthenticated}
+              logoutUser={bind(this.logoutUser, this)}
+              email={email}
+            />
+
+            <PublicRoute
+              path="/login"
+              component={Login}
+              isAuthenticated={isAuthenticated}
+            />
+            <PublicRoute
+              path="/register"
+              component={Register}
+              isAuthenticated={isAuthenticated}
+            />
+            <Route exact path="/" component={Home} isAllowed />
+          </div>
+        </section>
+      </Router>
+    );
+  }
+}
+
+App.propTypes = {
+  isAuthenticated: React.PropTypes.bool.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
+  email: React.PropTypes.string
+};
+
+const mapStateToProps = (state) => {
+  const { isAuthenticated, user } = state.auth;
+
+  return {
+    isAuthenticated,
+    email: user.email
+  };
+};
+
+export default connect(mapStateToProps)(App);

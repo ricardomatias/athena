@@ -1,4 +1,5 @@
-const register = require('./register');
+const auth = require('./auth'),
+      user = require('./user');
 
 async function index(ctx) {
   await ctx.render('index');
@@ -6,5 +7,7 @@ async function index(ctx) {
 
 module.exports = {
   index,
-  register
+  user,
+  register: auth.register,
+  login: auth.login
 };
