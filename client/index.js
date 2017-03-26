@@ -1,26 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
-import { AppContainer } from 'react-hot-loader';
+
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+
+import auth from './app/authentication/auth';
+import collections from './app/collections/state';
 
 import App from './app';
 
-const store = createStore(() => {});
+/* eslint-disable no-underscore-dangle */
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const render = (Component) => {
-  ReactDOM.render(
-    <AppContainer>
-      <Provider store={store}>
-        <Component />
-      </Provider>
-    </AppContainer>,
-    document.getElementById('root')
-  );
-};
+const middleware = composeEnhancers(applyMiddleware(thunkMiddleware, createLogger()));
 
-render(App);
+const reducers = combineReducers({ auth, collections });
 
-if (module.hot) {
-  module.hot.accept('./app', () => { render(App); });
-}
+const store = createStore(reducers, middleware);
+
+
+ReactDOM.render(
+  (<Provider store={store}>
+    <App pathname={location.pathname} />
+  </Provider>),
+  document.getElementById('root')
+);

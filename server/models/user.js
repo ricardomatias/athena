@@ -1,9 +1,18 @@
 const mongoose = require('mongoose'),
+      fs = require('fs'),
+      path = require('path'),
       bcrypt = require('bcryptjs');
 
 const promisify = require('../helpers').promisify;
 
+const Movie = require('./movie'),
+      Music = require('./music'),
+      Book = require('./book');
+
 const Schema = mongoose.Schema;
+
+const mocks = JSON.parse(fs.readFileSync(path.join(__dirname, '/mocks.json'), 'utf8'));
+
 
 /* eslint no-multi-assign: 0 */
 const UserSchema = Schema({
@@ -14,9 +23,9 @@ const UserSchema = Schema({
   },
   password: String,
   username: String,
-  movies: [ { type: Schema.Types.ObjectId, ref: 'Movie' } ],
-  music: [ { type: Schema.Types.ObjectId, ref: 'Music' } ],
-  books: [ { type: Schema.Types.ObjectId, ref: 'Books' } ]
+  movies: [ Movie.schema ],
+  music: [ Music.schema ],
+  books: [ Book.schema ]
 });
 
 UserSchema.methods.clean = function clean() {
@@ -25,19 +34,34 @@ UserSchema.methods.clean = function clean() {
   /* eslint no-underscore-dangle: 0 */
   delete user.password;
   delete user._id;
+  delete user.__v;
 
   return user;
 };
 
-UserSchema.methods.comparePasswords = function comparePasswords(password, next) {
+UserSchema.methods.comparePasswords = async function comparePasswords(password) {
+  const answer = await promisify(bcrypt.compare, password, this.password);
+
+  return answer;
+};
+
+UserSchema.methods.addMocks = function addMocks() {
   try {
-    promisify(bcrypt.compare, password, this.password);
+    mocks.movies.forEach((movie) => {
+      this.movies.addToSet(new Movie(movie));
+    });
 
-    next();
+    mocks.music.forEach((music) => {
+      this.music.addToSet(new Music(music));
+    });
+
+    mocks.books.forEach((book) => {
+      this.books.addToSet(new Book(book));
+    });
   } catch (err) {
-    console.error(err);
+    err.origin = 'addMocks';
 
-    next(err);
+    throw new Error(err);
   }
 };
 
@@ -52,6 +76,8 @@ UserSchema.pre('save', async function preSave(next) {
     const hash = await promisify(bcrypt.hash, this.password, salt);
 
     this.password = hash;
+
+    this.addMocks();
 
     next();
   } catch (err) {

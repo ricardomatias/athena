@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import fetch from 'isomorphic-fetch';
+
+import { connect } from 'react-redux';
 
 import { bind, toCamelCase } from '../helpers';
 
 import AuthForm from './auth-form';
 
-import { TOKEN_LOCATION } from '../config/constants';
+import { authenticateUser } from './auth';
 
 
 class Register extends Component {
@@ -64,19 +65,12 @@ class Register extends Component {
   }
 
   onAuth(event) {
+    const { email, password } = this.state,
+          { dispatch } = this.props;
+
     event.preventDefault();
 
-    fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.state)
-    }).then(res => res.json()).then((body) => {
-      const { token, email } = body;
-      localStorage.setItem(TOKEN_LOCATION, token);
-
-    });
+    dispatch(authenticateUser('register', { email, password }));
   }
 
   render() {
@@ -93,9 +87,19 @@ class Register extends Component {
         onChange={bind(this.onChange, this)}
         isDisabled={!isValid.validForm}
         isValid={isValid}
+        isLoading={this.props.isFetching}
       />
     );
   }
 }
 
-export { Register };
+Register.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
+  isFetching: React.PropTypes.bool.isRequired
+};
+
+const mapStateToProps = state => ({
+  isFetching: state.auth.isFetching
+});
+
+export default connect(mapStateToProps)(Register);

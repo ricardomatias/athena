@@ -1,23 +1,42 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link } from '../router';
 
-const Navigation = () => (
-  <div className="columns">
-    <div className="column is-offset-5 is-2">
-      <Link to="/" className="title has-text-centered">
-        <p>ATHENA</p>
-      </Link>
-    </div>
-    <div className="column is-offset-3 is-2">
-      <Link to="/register">
-        <button className="button is-primary is-pulled-right">Register</button>
-      </Link>
-      <Link to="/login">
-        <button className="button is-primary is-outlined is-pulled-right">Login</button>
-      </Link>
-    </div>
+const Navigation = props => (
+  <div className="container">
+    <nav className="nav">
+      <div className="nav-left">
+        <Link href="/" className="nav-item">
+          <p className="title">ATHENA</p>
+        </Link>
+      </div>
+      <div className="nav-right">
+        { props.isAuthenticated ? (
+          <span className="nav-item">
+            <p className="email">{props.email}</p>
+            <button className="button is-primary is-outlined" onClick={props.logoutUser}>Logout</button>
+          </span>
+        )
+          : (
+            <div className="nav-item">
+              <Link href="/login" classes="button is-info">
+                <span>Login</span>
+              </Link>
+              <Link href="/register" classes="button is-primary">
+                <span>Register</span>
+              </Link>
+            </div>
+          )
+       }
+      </div>
+    </nav>
   </div>
 );
+
+Navigation.propTypes = {
+  isAuthenticated: React.PropTypes.bool.isRequired,
+  logoutUser: React.PropTypes.func.isRequired,
+  email: React.PropTypes.string
+};
 
 export { Navigation };

@@ -4,7 +4,14 @@ const open = require('open'),
       timeGrunt = require('time-grunt'),
       loadTasks = require('load-grunt-tasks');
 
-const webpackConfig = require('./webpack.config');
+let webpackConfig;
+
+/* eslint "global-require": 0 */
+if (process.env === 'production') {
+  webpackConfig = require('./webpack.config.prod');
+} else {
+  webpackConfig = require('./webpack.config');
+}
 
 module.exports = (grunt) => {
   timeGrunt(grunt);
@@ -62,6 +69,7 @@ module.exports = (grunt) => {
         files: [
           // includes files within path
           { expand: true, src: [ 'vendors/*' ], dest: 'public' },
+          { expand: true, src: [ 'assets/*' ], dest: 'public' },
         ]
       },
     },

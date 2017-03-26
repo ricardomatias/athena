@@ -1,0 +1,43 @@
+{
+  "movies": [
+    {
+      "title": "Inception",
+      "poster": "https://upload.wikimedia.org/wikipedia/en/2/2e/Inception_(2010)_theatrical_poster.jpg"
+    },
+    {
+      "title": "Kill Bill Vol.1",
+      "poster": "https://upload.wikimedia.org/wikipedia/en/c/cf/Kill_bill_vol_one_ver.jpg"
+    }
+  ],
+  "music": [
+    {
+      "artist": "Radiohead",
+      "picture": "https://pbs.twimg.com/profile_images/715278848401809408/GiR2Q-Nw_400x400.jpg"
+    },
+    {
+      "artist": "Jamie Woon",
+      "picture": "https://thedecibels.files.wordpress.com/2016/03/jamie-woon-2015.jpg?w=256&h=256&crop=1"
+    },
+    {
+      "artist": "Sampha",
+      "picture": "http://static.wixstatic.com/media/61efc8_e2ead2060bf6466d8f7fcfbebcdde6f0.jpg_256"
+    }
+  ],
+  "books": [
+    {
+      "title": "1984",
+      "author": "George Orwell",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/31besGg4t3L._SX311_BO1,204,203,200_.jpg"
+    },
+    {
+      "title": "A Brave New World",
+      "author": "Aldous Huxley",
+      "cover": "https://upload.wikimedia.org/wikipedia/en/6/62/BraveNewWorld_FirstEdition.jpg"
+    },
+    {
+      "title": "L'Étranger",
+      "author": "Albert Camus",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/415Twip%2BRlL._SX302_BO1,204,203,200_.jpg"
+    }
+  ]
+}

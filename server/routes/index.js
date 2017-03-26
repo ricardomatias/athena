@@ -1,4 +1,8 @@
-const register = require('./register');
+const auth = require('./auth'),
+      user = require('./user'),
+      movies = require('./movies'),
+      music = require('./music'),
+      books = require('./books');
 
 async function index(ctx) {
   await ctx.render('index');
@@ -6,5 +10,10 @@ async function index(ctx) {
 
 module.exports = {
   index,
-  register
+  user,
+  movies,
+  music,
+  books,
+  register: auth.register,
+  login: auth.login
 };

@@ -14,8 +14,7 @@ module.exports = {
   },
   output: {
     path: resolve('public/'),
-    filename: '[name].js',
-    chunkFilename: '[chunkhash].[name].chunk.js'
+    filename: '[name].js'
   },
   resolve: {
     modules: [
@@ -37,15 +36,15 @@ module.exports = {
   },
   plugins: [
     new UglifyJSPlugin({
-        compress: {
-            warnings: false
-        }
+      compress: {
+        warnings: false
+      }
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor', // Specify the common bundle's name.
-      minChunks: function (module) {
-         // this assumes your vendor imports exist in the node_modules directory
-         return module.context && module.context.indexOf('node_modules') !== -1;
+      minChunks: (module) => {
+        // this assumes your vendor imports exist in the node_modules directory
+        return module.context && module.context.indexOf('node_modules') !== -1;
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
@@ -54,7 +53,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         // This has effect on the react lib size
-        'NODE_ENV': JSON.stringify('production'),
+        NODE_ENV: JSON.stringify('production')
       }
     })
   ]

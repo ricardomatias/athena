@@ -18,18 +18,20 @@ const inputStateClass = (state, input) => {
 };
 
 const PasswordInput = props => (
-  <p className="control has-icon">
-    <input
-      id={props.id}
-      className={`${props.inputState} input`}
-      type="password"
-      placeholder={props.placeholder}
-      onChange={props.onChange}
-    />
-    <span className="icon is-small">
-      <i className="fa fa-lock" />
-    </span>
-  </p>
+  <div className="field">
+    <p className="control has-icon">
+      <input
+        id={props.id}
+        className={`${props.inputState} input`}
+        type="password"
+        placeholder={props.placeholder}
+        onChange={props.onChange}
+      />
+      <span className="icon is-small">
+        <i className="fa fa-lock" />
+      </span>
+    </p>
+  </div>
 );
 
 PasswordInput.propTypes = {
@@ -61,24 +63,28 @@ const AuthForm = (props) => {
         <div className="card-content">
           <h2 className="subtitle">{ capitalize(props.route) }</h2>
           <form id="register" onSubmit={props.onAuth}>
-            <p className="control has-icon">
-              <input
-                id="email"
-                className={`${inputStateClass(props.isValid, 'email')} input`}
-                type="email"
-                placeholder="Email"
-                onChange={props.onChange}
-              />
-              <span className="icon is-small">
-                <i className="fa fa-envelope" />
-              </span>
-            </p>
+            <div className="field">
+              <p className="control has-icon">
+                <input
+                  id="email"
+                  className={`${inputStateClass(props.isValid, 'email')} input`}
+                  type="email"
+                  placeholder="Email"
+                  onChange={props.onChange}
+                />
+                <span className="icon is-small">
+                  <i className="fa fa-envelope" />
+                </span>
+              </p>
+            </div>
             { passwordField.map(field => (field)) }
-            <p className="control">
-              <button className="button is-success" onChange={preventTransition} disabled={props.isDisabled}>
-                {props.submit}
-              </button>
-            </p>
+            <div className="field">
+              <p className="control">
+                <button className={`button is-success ${props.isLoading ? 'is-loading' : ''}`} onChange={preventTransition} disabled={props.isDisabled}>
+                  {props.submit}
+                </button>
+              </p>
+            </div>
           </form>
         </div>
       </div>
@@ -93,7 +99,8 @@ AuthForm.propTypes = {
   onAuth: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
   isDisabled: React.PropTypes.bool.isRequired,
-  isValid: React.PropTypes.object.isRequired
+  isValid: React.PropTypes.object.isRequired,
+  isLoading: React.PropTypes.bool.isRequired
 };
 
 export default AuthForm;

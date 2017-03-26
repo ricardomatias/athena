@@ -1,6 +1,131 @@
-body {
-  h1 {
-    text-align: center;
-    font-family: menlo;
+.column.is-centered {
+  display: flex;
+  justify-content: center;
+}
+
+.image.is-1by2 {
+  padding-top: 150%;
+
+  img {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
   }
+}
+
+#root {
+  height: 100vh;
+
+  > div {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+  }
+}
+
+.nav-item .email {
+  margin-right: 1em;
+}
+
+.home {
+  overflow: hidden;
+  flex: 2;
+
+  .home-image {
+    background-size: cover;
+    position: relative;
+
+
+    a > div {
+      min-height: 100%;
+    }
+  }
+
+  .overlay-title {
+    word-break: keep-all;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%)
+  }
+
+  .image-overlay {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background-color: #000;
+  }
+
+  .home-image:hover .image-overlay {
+    opacity: 0.5;
+  }
+
+  .home-image:hover .overlay-title {
+    opacity: 1;
+  }
+}
+
+.modal-image .modal-subtitle {
+  font-weight: 500;
+  margin-top: 0.75em;
+}
+
+.modal-image .image {
+  border: 3px solid #fff;
+  border-radius: 4px;
+}
+
+.modal-image .image:hover {
+  border-color: #3273dc;
+}
+
+.card-image:hover .card-overlay {
+  opacity: 0.6;
+}
+
+.card-image:hover .card-button,
+.card-image:hover .card-subtitle {
+  opacity: 1;
+}
+
+.card-overlay {
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  z-index: 1000;
+  background-color: #000;
+  width: 100%;
+  transition: opacity 0.15s ease;
+  height: 100%;
+}
+
+.card-image .card-button {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  position: absolute;
+  z-index: 1500;
+  right: 2px;
+  top: 2px;
+}
+
+.card-image .card-subtitle {
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0s;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1500;
+  color: #fff;
+  width: 90%;
+  text-align: center;
+  word-wrap: break-word;
 }
